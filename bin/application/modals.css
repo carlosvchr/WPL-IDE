@@ -1,0 +1,19 @@
+#newfile-modal{
+	-fx-padding: 12px 12px 6px 12px;
+}
+
+#newpj-modal{
+	-fx-padding: 12px 12px 6px 12px;
+}
+
+.dialogbtn{
+	-fx-padding: 10px;	
+	-fx-border-insets: 8px;
+    -fx-background-insets: 4px;
+}
+
+.dialoglblsc{
+	-fx-focus-color: transparent;
+	-fx-text-box-border: transparent;
+	-fx-background-color: transparent;
+}

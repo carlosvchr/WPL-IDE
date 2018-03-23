@@ -1,0 +1,72 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+#menubar{
+	-fx-background-color: #212121;
+}
+
+.menu .label{
+	-fx-text-fill: #fafafa;
+}
+
+.context-menu{
+	-fx-background-color: #212121;
+}
+
+.button{
+	-fx-background-color: transparent;
+}
+
+.button:hover{
+	-fx-background-color: #616161;
+}
+
+.menu-item .label{
+	-fx-text-fill: #fafafa;
+}
+
+.menu-item:hover{
+	-fx-background-color: #424242;
+}
+
+.context-menu .accelerator-text {
+    -fx-text-fill: #E0E0E0;
+}
+
+.hierarchy-tab{
+	-fx-border-width: 0;
+	-fx-padding: 2px 0px 2px 0px;
+}
+
+.hierarchy-item{
+	-fx-alignment: center;
+	-fx-padding: 2px 4px 2px 20px;
+}
+
+.hierarchy-item:hover{
+	-fx-background-color: #CFD8DC;
+}
+
+#footer{
+	-fx-padding: 4px;
+}
+
+
+#toolbar{
+	-fx-max-height: 26px;
+	-fx-min-height: 26px;
+	-fx-pref-height: 20px;
+	-fx-background-color: #424242;
+	-fx-alignment: center-left;
+}
+
+#hierarchypane{
+	-fx-pref-width: 200px;
+}
+
+#consolepane{
+	-fx-pref-height: 180px;
+}
+
+#lblversion{
+	-fx-text-fill: #757575;
+}

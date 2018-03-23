@@ -1,0 +1,50 @@
+.keyword {
+    -fx-fill: #E91E63;
+    -fx-font-weight: bold;
+}
+
+.attribute {
+	-fx-fill: #9C27B0;
+    -fx-font-weight: bold;
+}
+
+.value{
+	-fx-fill: #827717;
+	-fx-font-weight: bold;
+}
+
+.semicolon {
+    -fx-font-weight: bold;
+}
+.paren {
+    -fx-fill: firebrick;
+    -fx-font-weight: bold;
+}
+.bracket {
+    -fx-fill: darkgreen;
+    -fx-font-weight: bold;
+}
+.brace {
+    -fx-fill: teal;
+    -fx-font-weight: bold;
+}
+.string {
+    -fx-fill: #43A047;
+}
+
+.number {
+	-fx-fill: #E65100;
+	-fx-font-weight: bold;
+}
+
+.comment {
+	-fx-fill: #607D8B;
+}
+
+#editorContainer{
+	-fx-background-color: #fafafa;
+}
+
+.paragraph-box:has-caret {
+    -fx-background-color: #ECEFF1;
+}
