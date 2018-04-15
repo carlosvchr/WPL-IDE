@@ -3,6 +3,7 @@ package application;
 import java.io.File;
 import java.util.Optional;
 
+import javafx.scene.control.Accordion;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -24,7 +25,7 @@ public class Hierarchy {
 	private static final String HIERARCHY_TAB_CLASS = "hierarchy-tab" ;
 	private TitledPane wplTpPane, styleTpPane, scriptTpPane, mediaTpPane, otherTpPane;
 	private VBox wplContent, styleContent, scriptContent, mediaContent, otherContent;
-	private VBox h;
+	private Accordion h;
 	private ScrollPane sp;
 	
 		
@@ -50,8 +51,8 @@ public class Hierarchy {
 	public ScrollPane getHierarchy() {  
 	       
 	    // Create Root Pane.
-	    h = new VBox();    
-	    h.getChildren().addAll(wplTpPane, styleTpPane, scriptTpPane, mediaTpPane, otherTpPane);
+	    h = new Accordion();
+	    h.getPanes().addAll(wplTpPane, styleTpPane, scriptTpPane, mediaTpPane, otherTpPane);
 	        
 	    sp  = new ScrollPane();
 	    sp.setHbarPolicy(ScrollBarPolicy.NEVER);

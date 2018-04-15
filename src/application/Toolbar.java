@@ -1,5 +1,10 @@
 package application;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -48,6 +53,10 @@ public class Toolbar {
 		
 		Image imrun = new Image(getClass().getResourceAsStream("run.png"));
 		Button brun = new Button();
+		brun.setOnMouseClicked(value->{
+			// Compile()
+			new WebViewDialog("file:///home/carlos/Escritorio/pruebasOutput.html");
+		});
 		brun.setTooltip(new Tooltip("Compile and run"));
 		brun.setGraphic(new ImageView(imrun));
 		
