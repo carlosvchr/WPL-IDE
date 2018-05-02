@@ -18,11 +18,13 @@ import java.util.Optional;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
@@ -30,7 +32,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -95,8 +99,22 @@ public class Main extends Application {
 			primaryStage.setTitle("IDE WPL");
 			primaryStage.show();
 			
+			BorderPane topContainer = new BorderPane();
+			topContainer.setId("menubarcontainer");
 			MenuPane menu = new MenuPane();
-			root.setTop(menu.getMenu());
+			Image closefile = new Image(getClass().getResourceAsStream("close.png"));
+			Button closebt = new Button();
+			closebt.setGraphic(new ImageView(closefile));
+			closebt.setId("closebtn");
+			closebt.setOnAction(new EventHandler<ActionEvent>(){
+				@Override
+				public void handle(ActionEvent event) {
+					Main.beforeExit();
+				}
+			});
+			topContainer.setCenter(menu.getMenu());
+			topContainer.setRight(closebt);
+			root.setTop(topContainer);
 			
 			BorderPane toolMidPane = new BorderPane();
 			Toolbar tb = new Toolbar();

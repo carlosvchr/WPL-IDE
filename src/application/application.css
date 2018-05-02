@@ -4,6 +4,22 @@
 	-fx-background-color: #212121;
 }
 
+#menubarcontainer{
+	-fx-background-color: #212121;
+}
+
+#closebtn{
+	-fx-text-fill: #fafafa;
+	-fx-max-height: 30px;
+	-fx-min-height: 30px;
+	-fx-max-width: 30px;
+	-fx-min-width: 30px;
+}
+
+#closebtn:hover{
+	-fx-background-color: #616161;
+}
+
 .menu .label{
 	-fx-text-fill: #fafafa;
 }

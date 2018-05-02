@@ -14,6 +14,9 @@ public class RichTextCode {
 	public RichTextCode() {
 		tabs = new ArrayList<>();
         tabPane = new TabPane();
+        CodeTab ct = new CodeTab("Information", "", this);
+        ct.setStyle("background-color:#ff0000");
+        tabPane.getTabs().add(ct);
 	}
 	
     /** Retorna el componente editor de codigo */

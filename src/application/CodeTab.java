@@ -16,8 +16,10 @@ import org.fxmisc.richtext.model.StyleSpansBuilder;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
 public class CodeTab extends Tab {
@@ -137,6 +139,18 @@ public class CodeTab extends Tab {
         // de este modo no podemos hacer un CTRL-Z y quedarnos con el documento en blanco.
         codeArea.getUndoManager().forgetHistory(); 
         isSaved = true;	// Para que por defecto cuando abrimos un archivo aparezca como guardado
+	}
+	
+	public CodeTab(String title, String content, RichTextCode parent) {
+		Label l = new Label("CTRL+N -> New Project\nCTRL+O -> Open Project\nCTRL+SHIFT+R -> Reload");
+		l.setId("infoEditorLbl");
+    	l.setStyle("-fx-text-fill: #9e9e9e; -fx-font-size: 16px;");
+    	setStyle("");
+		setClosable(false);
+		setText(title);
+		BorderPane bp = new BorderPane();
+		bp.setCenter(l);
+		setContent(bp);
 	}
 	
 	public void setUnsaved() {
