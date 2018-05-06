@@ -83,6 +83,23 @@
 	-fx-pref-height: 180px;
 }
 
+#consoleEditor{
+	-fx-background-color: #ffffff;
+	-fx-text-fill: #ff3333;
+}
+
 #lblversion{
 	-fx-text-fill: #757575;
+}
+
+.error{
+	-fx-text-fill: #ff3333;
+}
+
+.text{
+	-fx-text-fill: #000000;
+}
+
+.success{
+	-fx-text-fill: #33ff33;
 }

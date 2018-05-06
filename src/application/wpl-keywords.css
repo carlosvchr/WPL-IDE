@@ -8,6 +8,16 @@
     -fx-font-weight: bold;
 }
 
+.color{
+	-fx-fill: #827717;
+	-fx-font-weight: bold;
+}
+
+.var{
+	-fx-fill: #827717;
+	-fx-font-weight: bold;
+}
+
 .value{
 	-fx-fill: #827717;
 	-fx-font-weight: bold;
@@ -16,14 +26,17 @@
 .semicolon {
     -fx-font-weight: bold;
 }
+
 .paren {
     -fx-fill: firebrick;
     -fx-font-weight: bold;
 }
+
 .bracket {
     -fx-fill: darkgreen;
     -fx-font-weight: bold;
 }
+
 .brace {
     -fx-fill: teal;
     -fx-font-weight: bold;

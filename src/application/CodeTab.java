@@ -29,32 +29,25 @@ public class CodeTab extends Tab {
 	private boolean isSaved;
 	
 	private static final String[] KEYWORDS = new String[] {
-            "box", "hbox", "vbox", "tablebox", "sidebox", "dropdownbox", "tabbedbox", "modalbox",
-            "accordionbox", "item", "radiogroup", "slidehow", "radiobutton", "button", "image", "video",
-            "audio", "textfield", "checkbox", "label", "progressbar", "import", "define", "include"
+            "define", "import", "include", "accordion", "dropdown", "hbox", "html", "modal", "row", "row-header",
+            "sidebar", "table", "vbox", "audio", "button", "checkbox", "image", "label", "radiobutton", "textfield",
+            "video"
     };
     
     private static final String[] ATTRIBUTES = new String[] {
-            "title", "description", "lang", "charset", "redirect", "author", "keywords", "pageicon",
-            "type", "name", "content", "alt", "poster", "src", "autoplay", "controls", "loop", "muted",
-            "preload", "onclick", "onchange", "alignment", "type", "placeholder", "header", "text-align",
-            "text-decoration", "text-color", "text", "font-size", "font-family", "animation", "background-color",
-            "border-color", "border-radius", "border-size", "border", "class", "effect", "elevation", "height",
-            "id", "link", "margin", "padding", "slots", "tooltip", "width", "closable", "delay", "slide-controls",
-            "indicators", "caption-position", "caption"
+            "align", "alt", "animation", "author", "autoplay", "bgcolor", "border-color", "border-radius", "border",
+            "charset", "class", "controls", "description", "dropdown-type", "effect", "elevation", "filter-dropdown",
+            "filter-table", "font-family", "font-size", "height", "id", "keywords", "lang", "link", "loop", "margin",
+            "muted", "onchange", "onclick", "padding", "pageicon", "placeholder", "poster", "preload", "radiogroup", 
+            "redirect", "selected", "src", "table-attrs", "text-align", "text-color", "text-decoration", "title", 
+            "tooltip", "width"
     };
     
     private static final String[] VALUES = new String[] {
-            "true", "false", "red", "pink", "purple", "deep-purple", "indigo", "blue-gray", "blue", "light-blue",
-            "cyan", "aqua", "teal", "green", "light-green", "lime", "sand", "khaki", "yellow", "amber", "orange",
-            "deep-orange", "brown", "light-gray", "gray", "dark-gray", "pale-red", "pale-yellow", "pale-green", 
-            "pale-blue", "TimesNewRoman", "Georgia", "AndaleMono", "ArialBlack", "Arial", "Impact", "TrebuchetMS",
-            "Verdana", "ComicSansMS", "CourierNew", "wide", "bold", "italic", "shadowed", "underlined", "strikethrough",
-            "top-right", "top-left", "bottom-right", "bottom-left", "center", "top", "bottom", "right", "left",
-            "opacity-max", "opacity-min", "opacity", "grayscale-max", "grayscale-min", "grayscale", "sepia-max",
-            "sepia-min", "sepia", "zoom", "fading", "spin", "move-up", "move-down", "move-right", "move-left",
-            "cs-8859", "cs-ansi", "cs-ascii", "cs-utf-8", "color", "font", "tag", "attr", "dots", "numbers", "miniatures",
-            "angulars-bottom", "angulars", "arrows-bottom", "arrows", "none"
+    		"zoom", "fading", "fade-in", "spin", "move-up", "move-right", "move-down", "move-left", "true", "false",
+    		"clickable", "hoverable", "opacity-min", "opacity-max", "opacity", "sepia-min", "sepia-max", "sepia", 
+    		"grayscale-min", "grayscale-max", "grayscale", "bordered", "centered", "hoverable", "striped", "right", "left", "center",
+    		"bold", "italic", "underline", "overline", "strikethrough"
     };
 
     private static final String KEYWORD_PATTERN = "\\b(" + String.join("|", KEYWORDS) + ")\\b";
@@ -62,17 +55,21 @@ public class CodeTab extends Tab {
     private static final String VALUE_PATTERN = "\\b(" + String.join("|", VALUES) + ")\\b";
     private static final String SEMICOLON_PATTERN = "\\:"+"|"+"\\,";
     private static final String STRING_PATTERN = "\"([^\"\\\\]|\\\\.)*\"";
-    private static final String COMMENT_PATTERN = "#[^\n]*";
-    private static final String NUMBER_PATTERN = "\\b((0"+"|"+"([1-9][0-9]*))(.[0-9]*[1-9][0-9]*)?)((px)|%)?\\b";
+    private static final String COMMENT_PATTERN = "--[^\n]*";
+    private static final String NUMBER_PATTERN = "\\b((0"+"|"+"([1-9][0-9]*))(.[0-9]*[1-9][0-9]*)?)((px)|(%))?\\b";
+    private static final String COLOR_PATTERN = "\\#[a-fA-F0-9]{6}";
+    private static final String VAR_PATTERN = "\\$[a-zA-Z_][a-zA-Z0-9_]*";
 
     private static final Pattern PATTERN = Pattern.compile(
-            "(?<KEYWORD>" + KEYWORD_PATTERN + ")"
-            + "|(?<ATTRIBUTE>" + ATTR_PATTERN + ")"
-            + "|(?<VALUE>" + VALUE_PATTERN + ")"
+    		"(?<VALUE>" + VALUE_PATTERN + ")"
+    		+ "|(?<ATTRIBUTE>" + ATTR_PATTERN + ")"
+            + "|(?<KEYWORD>" + KEYWORD_PATTERN + ")"
             + "|(?<SEMICOLON>" + SEMICOLON_PATTERN + ")"
             + "|(?<STRING>" + STRING_PATTERN + ")"
             + "|(?<NUMBER>" + NUMBER_PATTERN + ")"
             + "|(?<COMMENT>" + COMMENT_PATTERN + ")"
+            + "|(?<COLOR>" + COLOR_PATTERN + ")"
+            + "|(?<VAR>" + VAR_PATTERN + ")"
     );
    
     
@@ -199,6 +196,8 @@ public class CodeTab extends Tab {
                     matcher.group("STRING") != null ? "string" :
                     matcher.group("NUMBER") != null ? "number" :
                     matcher.group("COMMENT") != null ? "comment" :
+                    matcher.group("COLOR") != null ? "color" :
+                    matcher.group("VAR") != null ? "var" :
                     null; /* never happens */ assert styleClass != null;
             spansBuilder.add(Collections.emptyList(), matcher.start() - lastKwEnd);
             spansBuilder.add(Collections.singleton(styleClass), matcher.end() - matcher.start());

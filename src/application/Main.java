@@ -2,12 +2,8 @@ package application;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
@@ -15,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
+
+import org.fxmisc.richtext.CodeArea;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -34,18 +32,19 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import mainpackage.CompResult;
+import mainpackage.WebPL;
 
 
 public class Main extends Application {
 	
 	public static final String SEPARATOR = System.getProperty("file.separator");
 	
-	public static final String WPL_EXT = ".wpla";
+	public static final String WPL_EXT = ".wepl";
 	public static final String WPLPJ_FILE = "project.wpj";
 	
 	public static final String PJ_DATE_KEY = "#PJDATE#";
@@ -61,6 +60,9 @@ public class Main extends Application {
 	public static final String FOLDER_SCRIPTS = "scripts";
 	public static final String FOLDER_OTHER = "other";
 	public static final String FOLDER_OUTPUT = "output";
+	public static final String LOG = "log.txt";
+	public static final String INDEX = "index.wepl";
+	public static final String OUTPUTNAME = "index.html";
 	
 	private static Stage stage;
 	private static String projectPath;
@@ -68,6 +70,9 @@ public class Main extends Application {
 	private static RichTextCode editor;
 	private static String pjname = "";
 	private static String date = "";
+	private static ConsoleOutput console;
+	
+	private static WebPL compiler;
 	
 	
 	@Override
@@ -89,6 +94,8 @@ public class Main extends Application {
 		        beforeExit();
 		    }
 		});
+		
+		compiler = new WebPL();
 		
 		try {
 			BorderPane root = new BorderPane();
@@ -156,7 +163,11 @@ public class Main extends Application {
 
 	/** Carga la consola de errores */
 	public static Pane loadConsole() {
-		Pane p = new Pane();
+		console = new ConsoleOutput(projectPath+LOG);
+		CodeArea ca = console.getConsole();
+		Pane p = new Pane(ca);
+		ca.prefWidthProperty().bind(p.widthProperty());
+		ca.prefHeightProperty().bind(p.heightProperty());
 		p.setId("consolepane");
 		SplitPane.setResizableWithParent(p, false);
 		
@@ -403,25 +414,14 @@ public class Main extends Application {
 		// TODO
 	}
 	
-	
-	/** Permite redireccionar la salida de consola a un fichero */
-	public static void standardIO2File(String fileName){
-        if(fileName.equals("")){//Si viene vacío usamos este por defecto
-            fileName="/home/carlos/Escritorio/log.txt";
-        }
-
-        try {
-            //Creamos un printstream sobre el archivo permitiendo añadir al
-            //final para no sobreescribir.
-            PrintStream ps = new PrintStream(new BufferedOutputStream(
-                    new FileOutputStream(new File(fileName),true)),true);
-            //Redirigimos entrada y salida estandar
-            System.setOut(ps);
-            System.setErr(ps);
-        } catch (FileNotFoundException ex) {
-            System.err.println("Se ha producido una excepción FileNotFoundException");
-        }
-    }
+	public static CompResult compile() {
+		File f = new File(projectPath+LOG);
+		if(f.exists())f.delete();
+		System.out.println("COMPILA");
+		CompResult res = compiler.compile(projectPath+FOLDER_WPL+SEPARATOR+INDEX, projectPath+FOLDER_OUTPUT+SEPARATOR+OUTPUTNAME);
+		console.printErrors(res.output());
+		return res;
+	}
 	
 	
 }
