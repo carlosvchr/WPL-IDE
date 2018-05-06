@@ -12,6 +12,8 @@ import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
+import org.fxmisc.richtext.model.TwoDimensional;
+import org.fxmisc.richtext.model.TwoDimensional.Position;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -112,11 +114,22 @@ public class CodeTab extends Tab {
                     setUnsaved();
                 });
         
-        // Mapeamos el tabulador para que inserte por defecto 4 espacios
         codeArea.setOnKeyPressed(value->{
+        	// Mapeamos el tabulador para que inserte por defecto 4 espacios
         	if(value.getCode() == KeyCode.TAB) {
         		codeArea.undo();
         		codeArea.replaceSelection("    ");
+        	}
+        	// Mapeamos la tecla ENTER para la autotabulación
+        	if(value.getCode() == KeyCode.ENTER) {
+        		Position pos = codeArea.offsetToPosition(codeArea.getCaretPosition(), null);
+        		char prevLine[] = codeArea.getText().split("\n")[pos.getMajor()-1].toCharArray();
+        		String initialBlanks = "";
+        		for(int i=0; i<prevLine.length; i++) {
+        			if(prevLine[i] == ' ') initialBlanks+=" ";
+        			else i=prevLine.length;
+        		}
+        		codeArea.insertText(codeArea.getCaretPosition(), initialBlanks);
         	}
         });
         

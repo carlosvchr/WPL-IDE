@@ -18,7 +18,7 @@ public class ConsoleOutput {
 	private static final String TEXT_PATTERN = "TEXT";
     private static final String SUCCESS_PATTERN = "Success[^\n]*";
 
-    private static final Pattern PATTERN = Pattern.compile(
+    private static final Pattern CONSOLE_PATTERN = Pattern.compile(
     		"(?<ERROR>" + ERROR_PATTERN + ")"
     		+ "|(?<TEXT>" + TEXT_PATTERN + ")"
             + "|(?<SUCCESS>" + SUCCESS_PATTERN + ")"
@@ -45,7 +45,7 @@ public class ConsoleOutput {
 	}
 	
 	private static StyleSpans<Collection<String>> computeHighlighting(String text) {
-        Matcher matcher = PATTERN.matcher(text);
+        Matcher matcher = CONSOLE_PATTERN.matcher(text);
         int lastKwEnd = 0;
         StyleSpansBuilder<Collection<String>> spansBuilder
                 = new StyleSpansBuilder<>();
