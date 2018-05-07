@@ -40,6 +40,12 @@
 	-fx-background-color: transparent;
 }
 
+#titleName{
+	-fx-text-fill: #e0e0e0;
+	-fx-fill-width: true;
+	-fx-text-alignment: center; 
+	-fx-font-weight: bold;
+}
 
 .menu-item .label{
 	-fx-text-fill: #fafafa;

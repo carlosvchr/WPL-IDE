@@ -20,7 +20,6 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -77,6 +76,8 @@ public class Main extends Application {
 	private static String date = "";
 	private static ConsoleOutput console;
 	
+	private static Label projectTitle;
+	
 	private static WebPL compiler;
 	
 	private double xOffset, yOffset;
@@ -117,6 +118,7 @@ public class Main extends Application {
 			BorderPane topContainer = new BorderPane();
 			topContainer.setId("menubarcontainer");
 			MenuPane menu = new MenuPane();
+			BorderPane titlebox = new BorderPane();
 			HBox windowButtons = new HBox();
 			Image closefile = new Image(getClass().getResourceAsStream("close.png"));
 			Button closebt = new Button();
@@ -154,16 +156,16 @@ public class Main extends Application {
 						stage.setFullScreen(true);
 				}
 			});
-			windowButtons.setOnMousePressed(new EventHandler<MouseEvent>() {
+			titlebox.setOnMousePressed(new EventHandler<MouseEvent>() {
 	            @Override
 	            public void handle(MouseEvent event) {
-	            	windowButtons.setCursor(Cursor.MOVE);
+	            	titlebox.setCursor(Cursor.MOVE);
 	                xOffset = primaryStage.getX() - event.getScreenX();
 	                yOffset = primaryStage.getY() - event.getScreenY();
 	            }
 	        });
 			
-			windowButtons.setOnMouseDragged(new EventHandler<MouseEvent>() {
+			titlebox.setOnMouseDragged(new EventHandler<MouseEvent>() {
 	            @Override
 	            public void handle(MouseEvent event) {
 	            	if(stage.isFullScreen()) {
@@ -174,17 +176,22 @@ public class Main extends Application {
 	            }
 	        });
 			
-			windowButtons.setOnMouseReleased(new EventHandler<MouseEvent>() {
+			titlebox.setOnMouseReleased(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
-					windowButtons.setCursor(Cursor.DEFAULT);
+					titlebox.setCursor(Cursor.DEFAULT);
 				}
 			});
+				
+			projectTitle = new Label();
+			projectTitle.setId("titleName");
 			
-			windowButtons.setAlignment(Pos.CENTER_RIGHT);
 			windowButtons.getChildren().addAll(minimizebt, maximizebt, closebt);
+			titlebox.setRight(windowButtons);
+			titlebox.setCenter(projectTitle);
+			
 			topContainer.setCenter(menu.getMenu());
-			topContainer.setTop(windowButtons);
+			topContainer.setTop(titlebox);
 			root.setTop(topContainer);
 			
 			BorderPane toolMidPane = new BorderPane();
@@ -348,6 +355,10 @@ public class Main extends Application {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public static void setProjectTitle(String s) {
+		projectTitle.setText(s);
 	}
 	
 	public static void saveWorkspace() {

@@ -12,7 +12,6 @@ import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
-import org.fxmisc.richtext.model.TwoDimensional;
 import org.fxmisc.richtext.model.TwoDimensional.Position;
 
 import javafx.scene.control.Alert;
@@ -31,7 +30,7 @@ public class CodeTab extends Tab {
 	private boolean isSaved;
 	
 	private final String[] KEYWORDS = new String[] {
-            "define", "import", "include", "accordion", "dropdown", "hbox", "html", "modal", "row", "row-header",
+            "define", "import", "include", "accordion", "dropdown", "hbox", "html", "modal", "row-header", "row",
             "sidebar", "table", "vbox", "audio", "button", "checkbox", "image", "label", "radiobutton", "textfield",
             "video"
     };
@@ -268,6 +267,5 @@ public class CodeTab extends Tab {
 		}
 		codeArea.selectRange(pos, pos+val.length());
 	}
-	
 	
 }

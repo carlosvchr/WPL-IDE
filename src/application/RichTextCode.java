@@ -3,6 +3,9 @@ package application;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 
 public class RichTextCode {
@@ -14,6 +17,14 @@ public class RichTextCode {
 	public RichTextCode() {
 		tabs = new ArrayList<>();
         tabPane = new TabPane();
+        tabPane.getSelectionModel().selectedItemProperty().addListener(
+    	    new ChangeListener<Tab>() {
+    	        @Override
+    	        public void changed(ObservableValue<? extends Tab> ov, Tab t, Tab t1) {
+    	            Main.setProjectTitle(((CodeTab)t1).getPath());
+    	        }
+    	    }
+    	);
         CodeTab ct = new CodeTab("Information", "", this);
         ct.setStyle("background-color:#ff0000");
         tabPane.getTabs().add(ct);
