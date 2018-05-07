@@ -14,11 +14,11 @@ public class ConsoleOutput {
 	String logPath;
 	CodeArea ca;
 	
-	private static final String ERROR_PATTERN = "Error[^\n]*";
-	private static final String TEXT_PATTERN = "TEXT";
-    private static final String SUCCESS_PATTERN = "Success[^\n]*";
+	private final String ERROR_PATTERN = "Error[^\n]*";
+	private final String TEXT_PATTERN = "TEXT";
+    private final String SUCCESS_PATTERN = "\\b((0"+"|"+"([1-9][0-9]*))(.[0-9]*[1-9][0-9]*)?)((px)|(%))?\\b";
 
-    private static final Pattern CONSOLE_PATTERN = Pattern.compile(
+    private final Pattern CONSOLE_PATTERN = Pattern.compile(
     		"(?<ERROR>" + ERROR_PATTERN + ")"
     		+ "|(?<TEXT>" + TEXT_PATTERN + ")"
             + "|(?<SUCCESS>" + SUCCESS_PATTERN + ")"
@@ -27,13 +27,14 @@ public class ConsoleOutput {
 	public ConsoleOutput(String log) {
 		this.logPath = log;
 		ca = new CodeArea();
-		ca.setEditable(false);
+		//ca.setEditable(false);
 		ca.setId("consoleEditor");
+		ca.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		ca.richChanges()
-        .filter(ch -> !ch.getInserted().equals(ch.getRemoved())) // XXX
-        .subscribe(change -> {
-            ca.setStyleSpans(0, computeHighlighting(ca.getText()));
-        });
+	        .filter(ch -> !ch.getInserted().equals(ch.getRemoved())) // XXX
+	        .subscribe(change -> {
+	            ca.setStyleSpans(0, computeHighlighting(ca.getText()));
+	        });
 	}
 	
 	public void printErrors(String s) {
@@ -44,7 +45,7 @@ public class ConsoleOutput {
 		return ca;
 	}
 	
-	private static StyleSpans<Collection<String>> computeHighlighting(String text) {
+	private StyleSpans<Collection<String>> computeHighlighting(String text) {
         Matcher matcher = CONSOLE_PATTERN.matcher(text);
         int lastKwEnd = 0;
         StyleSpansBuilder<Collection<String>> spansBuilder
@@ -55,6 +56,7 @@ public class ConsoleOutput {
                     matcher.group("TEXT") != null ? "text" :
                     matcher.group("SUCCESS") != null ? "success" :
                     null; /* never happens */ assert styleClass != null;
+            System.out.println(styleClass);
             spansBuilder.add(Collections.emptyList(), matcher.start() - lastKwEnd);
             spansBuilder.add(Collections.singleton(styleClass), matcher.end() - matcher.start());
             lastKwEnd = matcher.end();

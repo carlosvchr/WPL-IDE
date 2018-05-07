@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
+import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
 
 import javafx.application.Application;
@@ -19,6 +20,8 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -27,14 +30,16 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import mainpackage.CompResult;
 import mainpackage.WebPL;
@@ -74,17 +79,17 @@ public class Main extends Application {
 	
 	private static WebPL compiler;
 	
+	private double xOffset, yOffset;
 	
 	@Override
 	public void start(Stage primaryStage) {
-		//standardIO2File("");
+		primaryStage.initStyle(StageStyle.UNDECORATED);
 		Platform.setImplicitExit(false);
 		stage = primaryStage;
 		stage.getIcons().add(new Image(getClass().getResourceAsStream("logo16x16.png")));
 		stage.getIcons().add(new Image(getClass().getResourceAsStream("logo32x32.png")));
 		stage.getIcons().add(new Image(getClass().getResourceAsStream("logo48x48.png")));
 		stage.getIcons().add(new Image(getClass().getResourceAsStream("logo64x64.png")));
-		primaryStage.setFullScreen(true);
 		
 		// Consumimos el evento de salir para que se ejecute nuestro codigo por defecto
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -94,6 +99,9 @@ public class Main extends Application {
 		        beforeExit();
 		    }
 		});
+		stage.setFullScreenExitHint("");
+		stage.setMinHeight(140);
+		stage.setMinWidth(200);
 		
 		compiler = new WebPL();
 		
@@ -109,18 +117,74 @@ public class Main extends Application {
 			BorderPane topContainer = new BorderPane();
 			topContainer.setId("menubarcontainer");
 			MenuPane menu = new MenuPane();
+			HBox windowButtons = new HBox();
 			Image closefile = new Image(getClass().getResourceAsStream("close.png"));
 			Button closebt = new Button();
 			closebt.setGraphic(new ImageView(closefile));
-			closebt.setId("closebtn");
+			closebt.getStyleClass().add("windowbtn");
+			closebt.setCursor(Cursor.HAND);
 			closebt.setOnAction(new EventHandler<ActionEvent>(){
 				@Override
 				public void handle(ActionEvent event) {
 					Main.beforeExit();
 				}
 			});
+			Image minimizefile = new Image(getClass().getResourceAsStream("minimize.png"));
+			Button minimizebt = new Button();
+			minimizebt.setGraphic(new ImageView(minimizefile));
+			minimizebt.getStyleClass().add("windowbtn");
+			minimizebt.setCursor(Cursor.HAND);
+			minimizebt.setOnAction(new EventHandler<ActionEvent>(){
+				@Override
+				public void handle(ActionEvent event) {
+					stage.setIconified(true);
+				}
+			});
+			Image maximizefile = new Image(getClass().getResourceAsStream("maximize.png"));
+			Button maximizebt = new Button();
+			maximizebt.setGraphic(new ImageView(maximizefile));
+			maximizebt.getStyleClass().add("windowbtn");
+			maximizebt.setCursor(Cursor.HAND);
+			maximizebt.setOnAction(new EventHandler<ActionEvent>(){
+				@Override
+				public void handle(ActionEvent event) {
+					if(stage.isFullScreen())
+						stage.setFullScreen(false);
+					else
+						stage.setFullScreen(true);
+				}
+			});
+			windowButtons.setOnMousePressed(new EventHandler<MouseEvent>() {
+	            @Override
+	            public void handle(MouseEvent event) {
+	            	windowButtons.setCursor(Cursor.MOVE);
+	                xOffset = primaryStage.getX() - event.getScreenX();
+	                yOffset = primaryStage.getY() - event.getScreenY();
+	            }
+	        });
+			
+			windowButtons.setOnMouseDragged(new EventHandler<MouseEvent>() {
+	            @Override
+	            public void handle(MouseEvent event) {
+	            	if(stage.isFullScreen()) {
+	            		stage.setFullScreen(false);
+	            	}
+	                primaryStage.setX(event.getScreenX() + xOffset);
+	                primaryStage.setY(event.getScreenY() + yOffset);
+	            }
+	        });
+			
+			windowButtons.setOnMouseReleased(new EventHandler<MouseEvent>() {
+				@Override
+				public void handle(MouseEvent event) {
+					windowButtons.setCursor(Cursor.DEFAULT);
+				}
+			});
+			
+			windowButtons.setAlignment(Pos.CENTER_RIGHT);
+			windowButtons.getChildren().addAll(minimizebt, maximizebt, closebt);
 			topContainer.setCenter(menu.getMenu());
-			topContainer.setRight(closebt);
+			topContainer.setTop(windowButtons);
 			root.setTop(topContainer);
 			
 			BorderPane toolMidPane = new BorderPane();
@@ -162,28 +226,54 @@ public class Main extends Application {
 	
 
 	/** Carga la consola de errores */
-	public static Pane loadConsole() {
+	public static StackPane loadConsole() {
 		console = new ConsoleOutput(projectPath+LOG);
 		CodeArea ca = console.getConsole();
-		Pane p = new Pane(ca);
-		ca.prefWidthProperty().bind(p.widthProperty());
-		ca.prefHeightProperty().bind(p.heightProperty());
-		p.setId("consolepane");
-		SplitPane.setResizableWithParent(p, false);
+		StackPane sp = new StackPane(new VirtualizedScrollPane<>(ca));
+		ca.prefWidthProperty().bind(sp.widthProperty());
+		//ca.prefHeightProperty().bind(p.heightProperty());
+		sp.setId("consolepane");
+		SplitPane.setResizableWithParent(sp, false);
 		
-		return p;
+		return sp;
 	}
 	
 	/** Carga la barra inferior que contiene la barra de progreso */
-	public static BorderPane loadFooter() {
+	public BorderPane loadFooter() {
 		BorderPane footer = new BorderPane();
 		
 		Label lversion = new Label("Version 1.0");
 		lversion.setId("lblversion");
-		ProgressBar pbar = new ProgressBar();
+		Image resizeim = new Image(getClass().getResourceAsStream("resize.png"));
+		Button resizebt = new Button();
+		resizebt.setGraphic(new ImageView(resizeim));
+		resizebt.getStyleClass().add("resizebtn");
+		resizebt.setCursor(Cursor.HAND);
+
+		resizebt.setOnMouseDragged(new EventHandler<MouseEvent>() {
+	        public void handle(MouseEvent event) {
+				stage.setWidth(stage.getWidth()+event.getX()-16);
+				stage.setHeight(stage.getHeight()+event.getY()-16);
+	        }
+	    });
+		
+		resizebt.setOnMousePressed(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				resizebt.setCursor(Cursor.SE_RESIZE);
+			}
+		});
+		
+		resizebt.setOnMouseReleased(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				resizebt.setCursor(Cursor.HAND);
+			}
+		});
+		
 		
 		footer.setLeft(lversion);
-		footer.setRight(pbar);
+		footer.setRight(resizebt);
 		
 		footer.setId("footer");
 		

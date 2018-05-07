@@ -8,16 +8,24 @@
 	-fx-background-color: #212121;
 }
 
-#closebtn{
+.windowbtn{
 	-fx-text-fill: #fafafa;
-	-fx-max-height: 30px;
-	-fx-min-height: 30px;
-	-fx-max-width: 30px;
-	-fx-min-width: 30px;
+	-fx-max-height: 24px;
+	-fx-min-height: 24px;
+	-fx-max-width: 24px;
+	-fx-min-width: 24px;
 }
 
-#closebtn:hover{
-	-fx-background-color: #616161;
+.resizebtn{
+	-fx-text-fill: #fafafa;
+	-fx-max-height: 16px;
+	-fx-min-height: 16px;
+	-fx-max-width: 16px;
+	-fx-min-width: 16px;
+}
+
+.resizebtn:hover{
+	-fx-background-color: transparent;
 }
 
 .menu .label{
@@ -32,9 +40,6 @@
 	-fx-background-color: transparent;
 }
 
-.button:hover{
-	-fx-background-color: #616161;
-}
 
 .menu-item .label{
 	-fx-text-fill: #fafafa;

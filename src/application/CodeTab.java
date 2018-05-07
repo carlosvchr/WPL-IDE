@@ -30,13 +30,13 @@ public class CodeTab extends Tab {
 	private CodeArea codeArea;
 	private boolean isSaved;
 	
-	private static final String[] KEYWORDS = new String[] {
+	private final String[] KEYWORDS = new String[] {
             "define", "import", "include", "accordion", "dropdown", "hbox", "html", "modal", "row", "row-header",
             "sidebar", "table", "vbox", "audio", "button", "checkbox", "image", "label", "radiobutton", "textfield",
             "video"
     };
     
-    private static final String[] ATTRIBUTES = new String[] {
+    private final String[] ATTRIBUTES = new String[] {
             "align", "alt", "animation", "author", "autoplay", "bgcolor", "border-color", "border-radius", "border",
             "charset", "class", "controls", "description", "dropdown-type", "effect", "elevation", "filter-dropdown",
             "filter-table", "font-family", "font-size", "height", "id", "keywords", "lang", "link", "loop", "margin",
@@ -45,24 +45,24 @@ public class CodeTab extends Tab {
             "tooltip", "width"
     };
     
-    private static final String[] VALUES = new String[] {
+    private final String[] VALUES = new String[] {
     		"zoom", "fading", "fade-in", "spin", "move-up", "move-right", "move-down", "move-left", "true", "false",
     		"clickable", "hoverable", "opacity-min", "opacity-max", "opacity", "sepia-min", "sepia-max", "sepia", 
     		"grayscale-min", "grayscale-max", "grayscale", "bordered", "centered", "hoverable", "striped", "right", "left", "center",
     		"bold", "italic", "underline", "overline", "strikethrough"
     };
 
-    private static final String KEYWORD_PATTERN = "\\b(" + String.join("|", KEYWORDS) + ")\\b";
-    private static final String ATTR_PATTERN = "\\b(" + String.join("|", ATTRIBUTES) + ")\\b";
-    private static final String VALUE_PATTERN = "\\b(" + String.join("|", VALUES) + ")\\b";
-    private static final String SEMICOLON_PATTERN = "\\:"+"|"+"\\,";
-    private static final String STRING_PATTERN = "\"([^\"\\\\]|\\\\.)*\"";
-    private static final String COMMENT_PATTERN = "--[^\n]*";
-    private static final String NUMBER_PATTERN = "\\b((0"+"|"+"([1-9][0-9]*))(.[0-9]*[1-9][0-9]*)?)((px)|(%))?\\b";
-    private static final String COLOR_PATTERN = "\\#[a-fA-F0-9]{6}";
-    private static final String VAR_PATTERN = "\\$[a-zA-Z_][a-zA-Z0-9_]*";
+    private final String KEYWORD_PATTERN = "\\b(" + String.join("|", KEYWORDS) + ")\\b";
+    private final String ATTR_PATTERN = "\\b(" + String.join("|", ATTRIBUTES) + ")\\b";
+    private final String VALUE_PATTERN = "\\b(" + String.join("|", VALUES) + ")\\b";
+    private final String SEMICOLON_PATTERN = "\\:"+"|"+"\\,";
+    private final String STRING_PATTERN = "\"([^\"\\\\]|\\\\.)*\"";
+    private final String COMMENT_PATTERN = "--[^\n]*";
+    private final String NUMBER_PATTERN = "\\b((0"+"|"+"([1-9][0-9]*))(.[0-9]*[1-9][0-9]*)?)((px)|(\\%))?\\b";
+    private final String COLOR_PATTERN = "\\#[a-fA-F0-9]{6}\\b";
+    private final String VAR_PATTERN = "\\$[a-zA-Z_][a-zA-Z0-9_]*";
 
-    private static final Pattern PATTERN = Pattern.compile(
+    private final Pattern PATTERN = Pattern.compile(
     		"(?<VALUE>" + VALUE_PATTERN + ")"
     		+ "|(?<ATTRIBUTE>" + ATTR_PATTERN + ")"
             + "|(?<KEYWORD>" + KEYWORD_PATTERN + ")"
@@ -195,7 +195,7 @@ public class CodeTab extends Tab {
 		return isSaved;
 	}
 	
-	private static StyleSpans<Collection<String>> computeHighlighting(String text) {
+	private StyleSpans<Collection<String>> computeHighlighting(String text) {
         Matcher matcher = PATTERN.matcher(text);
         int lastKwEnd = 0;
         StyleSpansBuilder<Collection<String>> spansBuilder
