@@ -27,7 +27,7 @@ public class ConsoleOutput {
 	public ConsoleOutput(String log) {
 		this.logPath = log;
 		ca = new CodeArea();
-		//ca.setEditable(false);
+		ca.setEditable(false);
 		ca.setId("consoleEditor");
 		ca.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		ca.richChanges()
@@ -56,7 +56,6 @@ public class ConsoleOutput {
                     matcher.group("TEXT") != null ? "text" :
                     matcher.group("SUCCESS") != null ? "success" :
                     null; /* never happens */ assert styleClass != null;
-            System.out.println(styleClass);
             spansBuilder.add(Collections.emptyList(), matcher.start() - lastKwEnd);
             spansBuilder.add(Collections.singleton(styleClass), matcher.end() - matcher.start());
             lastKwEnd = matcher.end();

@@ -518,7 +518,6 @@ public class Main extends Application {
 	public static CompResult compile() {
 		File f = new File(projectPath+LOG);
 		if(f.exists())f.delete();
-		System.out.println("COMPILA");
 		CompResult res = compiler.compile(projectPath+FOLDER_WPL+SEPARATOR+INDEX, projectPath+FOLDER_OUTPUT+SEPARATOR+OUTPUTNAME);
 		console.printErrors(res.output());
 		return res;

@@ -21,7 +21,8 @@ public class RichTextCode {
     	    new ChangeListener<Tab>() {
     	        @Override
     	        public void changed(ObservableValue<? extends Tab> ov, Tab t, Tab t1) {
-    	            Main.setProjectTitle(((CodeTab)t1).getPath());
+    	        	if(t1!=null)
+    	        		Main.setProjectTitle(((CodeTab)t1).getPath());
     	        }
     	    }
     	);
