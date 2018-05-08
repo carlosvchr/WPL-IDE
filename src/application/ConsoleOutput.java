@@ -29,6 +29,7 @@ public class ConsoleOutput {
 		ca = new CodeArea();
 		ca.setEditable(false);
 		ca.setId("consoleEditor");
+		ca.getStylesheets().clear();
 		ca.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		ca.richChanges()
 	        .filter(ch -> !ch.getInserted().equals(ch.getRemoved())) // XXX

@@ -46,7 +46,7 @@ import mainpackage.WebPL;
 
 public class Main extends Application {
 	
-	public static final String SEPARATOR = System.getProperty("file.separator");
+	public static final String SEPARATOR = System.getProperty("file.separator").compareTo("/")==0 ? "/" : "\\\\";
 	
 	public static final String WPL_EXT = ".wepl";
 	public static final String WPLPJ_FILE = "project.wpj";

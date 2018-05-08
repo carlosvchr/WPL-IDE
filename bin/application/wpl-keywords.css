@@ -8,6 +8,10 @@
     -fx-font-weight: bold;
 }
 
+.wrongText{
+	 
+}
+
 .color{
 	-fx-fill: #827717;
 	-fx-font-weight: bold;

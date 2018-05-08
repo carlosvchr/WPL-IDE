@@ -38,7 +38,7 @@ public class CodeTab extends Tab {
     private final String[] ATTRIBUTES = new String[] {
             "align", "alt", "animation", "author", "autoplay", "bgcolor", "border-color", "border-radius", "border",
             "charset", "class", "controls", "description", "dropdown-type", "effect", "elevation", "filter-dropdown",
-            "filter-table", "font-family", "font-size", "height", "id", "keywords", "lang", "link", "loop", "margin",
+            "filter-table", "fixed-position", "font-family", "font-size", "height", "id", "keywords", "lang", "link", "loop", "margin",
             "muted", "onchange", "onclick", "padding", "pageicon", "placeholder", "poster", "preload", "radiogroup", 
             "redirect", "selected", "src", "table-attrs", "text-align", "text-color", "text-decoration", "title", 
             "tooltip", "width"
@@ -48,7 +48,7 @@ public class CodeTab extends Tab {
     		"zoom", "fading", "fade-in", "spin", "move-up", "move-right", "move-down", "move-left", "true", "false",
     		"clickable", "hoverable", "opacity-min", "opacity-max", "opacity", "sepia-min", "sepia-max", "sepia", 
     		"grayscale-min", "grayscale-max", "grayscale", "bordered", "centered", "hoverable", "striped", "right", "left", "center",
-    		"bold", "italic", "underline", "overline", "strikethrough"
+    		"bold", "italic", "underline", "overline", "strikethrough", "top-left", "top-right", "bottom-left", "bottom-right"
     };
 
     private final String KEYWORD_PATTERN = "\\b(" + String.join("|", KEYWORDS) + ")\\b";
@@ -60,6 +60,7 @@ public class CodeTab extends Tab {
     private final String NUMBER_PATTERN = "\\b((0"+"|"+"([1-9][0-9]*))(.[0-9]*[1-9][0-9]*)?)((px)|(\\%))?\\b";
     private final String COLOR_PATTERN = "\\#[a-fA-F0-9]{6}\\b";
     private final String VAR_PATTERN = "\\$[a-zA-Z_][a-zA-Z0-9_]*";
+    private final String REST_PATTERN = "[^ \n]+ ";
 
     private final Pattern PATTERN = Pattern.compile(
     		"(?<VALUE>" + VALUE_PATTERN + ")"
@@ -71,8 +72,8 @@ public class CodeTab extends Tab {
             + "|(?<COMMENT>" + COMMENT_PATTERN + ")"
             + "|(?<COLOR>" + COLOR_PATTERN + ")"
             + "|(?<VAR>" + VAR_PATTERN + ")"
+            + "|(?<REST>" + REST_PATTERN + ")"
     );
-   
     
 	public CodeTab(String title, String path, String content, RichTextCode parent) {
 		this.path = path;
@@ -106,7 +107,7 @@ public class CodeTab extends Tab {
         codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
 
         codeArea.richChanges()
-                .filter(ch -> !ch.getInserted().equals(ch.getRemoved())) // XXX
+                .filter(ch -> !ch.getInserted().equals(ch.getRemoved())) 
                 .subscribe(change -> {
                     codeArea.setStyleSpans(0, computeHighlighting(codeArea.getText()));
                     codeArea.getUndoManager().mark();
@@ -209,8 +210,10 @@ public class CodeTab extends Tab {
                     matcher.group("NUMBER") != null ? "number" :
                     matcher.group("COMMENT") != null ? "comment" :
                     matcher.group("COLOR") != null ? "color" :
-                    matcher.group("VAR") != null ? "var" :
-                    null; /* never happens */ assert styleClass != null;
+                    matcher.group("VAR") != null ? "var" : 
+                    matcher.group("REST") != null ? "wrongText" :
+                    null;	assert styleClass!=null;
+            System.out.println(styleClass);
             spansBuilder.add(Collections.emptyList(), matcher.start() - lastKwEnd);
             spansBuilder.add(Collections.singleton(styleClass), matcher.end() - matcher.start());
             lastKwEnd = matcher.end();
