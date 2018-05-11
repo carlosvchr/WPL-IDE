@@ -7,6 +7,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.text.Font;
 
 public class RichTextCode {
 
@@ -15,6 +16,11 @@ public class RichTextCode {
 	private ArrayList<CodeTab> tabs;
 	
 	public RichTextCode() {
+		// load the roboto font.
+	    Font.loadFont(
+	      getClass().getResource("RobotoMono.ttf").toExternalForm(), 
+	      10
+	    );
 		tabs = new ArrayList<>();
         tabPane = new TabPane();
         tabPane.getSelectionModel().selectedItemProperty().addListener(

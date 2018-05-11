@@ -57,7 +57,7 @@ public class CodeTab extends Tab {
     private final String SEMICOLON_PATTERN = "\\:"+"|"+"\\,";
     private final String STRING_PATTERN = "\"([^\"\\\\]|\\\\.)*\"";
     private final String COMMENT_PATTERN = "--[^\n]*";
-    private final String NUMBER_PATTERN = "\\b((0"+"|"+"([1-9][0-9]*))(.[0-9]*[1-9][0-9]*)?)((px)|(\\%))?\\b";
+    private final String NUMBER_PATTERN = "\\b((0"+"|"+"([1-9][0-9]*))(.[0-9]*[1-9][0-9]*)?)((px)|(%))?\\b";
     private final String COLOR_PATTERN = "\\#[a-fA-F0-9]{6}\\b";
     private final String VAR_PATTERN = "\\$[a-zA-Z_][a-zA-Z0-9_]*";
     private final String REST_PATTERN = "[^ \n]+ ";
@@ -105,11 +105,14 @@ public class CodeTab extends Tab {
 		codeArea = new CodeArea();
         codeArea.setId("editorContainer");
         codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
+        codeArea.setStyle("-fx-font-family: 'Roboto Mono'; -fx-font-size: 10pt;");
 
         codeArea.richChanges()
                 .filter(ch -> !ch.getInserted().equals(ch.getRemoved())) 
                 .subscribe(change -> {
-                    codeArea.setStyleSpans(0, computeHighlighting(codeArea.getText()));
+                	if(codeArea.getText().length()>0) {
+                		codeArea.setStyleSpans(0, computeHighlighting(codeArea.getText()));
+                	}
                     codeArea.getUndoManager().mark();
                     setUnsaved();
                 });
@@ -213,7 +216,6 @@ public class CodeTab extends Tab {
                     matcher.group("VAR") != null ? "var" : 
                     matcher.group("REST") != null ? "wrongText" :
                     null;	assert styleClass!=null;
-            System.out.println(styleClass);
             spansBuilder.add(Collections.emptyList(), matcher.start() - lastKwEnd);
             spansBuilder.add(Collections.singleton(styleClass), matcher.end() - matcher.start());
             lastKwEnd = matcher.end();

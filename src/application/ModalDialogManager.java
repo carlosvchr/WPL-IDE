@@ -192,6 +192,12 @@ public class ModalDialogManager{
 					String mainDirPath = pjfolder + Main.SEPARATOR;
 					File wplDir = new File(mainDirPath+Main.FOLDER_WPL);
 					wplDir.mkdir();
+					File indexFile = new File(mainDirPath+Main.FOLDER_WPL+Main.SEPARATOR+Main.INDEX);
+					try {
+						indexFile.createNewFile();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 					File mediaDir = new File(mainDirPath+Main.FOLDER_MEDIA);
 					mediaDir.mkdir();
 					File stylesDir = new File(mainDirPath+Main.FOLDER_STYLES);

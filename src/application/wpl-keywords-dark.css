@@ -1,10 +1,10 @@
 .keyword {
-    -fx-fill: #9C27B0;
+    -fx-fill: #ECEFF1;
     -fx-font-weight: bold;
 }
 
 .attribute {
-	-fx-fill: #9AB8EF;
+	-fx-fill: #4DD0E1;
     -fx-font-weight: bold;
 }
 
@@ -13,42 +13,42 @@
 }
 
 .color{
-	-fx-fill: #D81B60;
+	-fx-fill: #FBC02D;
 	-fx-font-weight: bold;
 }
 
 .var{
-	-fx-fill: #D81B60;
+	-fx-fill: #FBC02D;
 	-fx-font-weight: bold;
 }
 
 .value{
-	-fx-fill: #D81B60;
+	-fx-fill: #FBC02D;
 	-fx-font-weight: bold;
 }
 
 .semicolon {
-	-fx-fill: #37474F;
+	-fx-fill: #ECEFF1;
     -fx-font-weight: bold;
 }
 
 .string {
-    -fx-fill: #C53929;
+    -fx-fill: #F06292;
 }
 
 .number {
-	-fx-fill: #D81B60;
+	-fx-fill: #FBC02D;
 	-fx-font-weight: bold;
 }
 
 .comment {
-	-fx-fill: #b5b5b5;
+	-fx-fill: #d0d0d0;
 }
 
 #editorContainer{
-	-fx-background-color: #FFFFFF;
+	-fx-background-color: #212121;
 }
 
 .paragraph-box:has-caret {
-    -fx-background-color: #ECEFF1;
+    -fx-background-color: #616161;
 }
